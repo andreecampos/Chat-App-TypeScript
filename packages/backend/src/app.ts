@@ -1,27 +1,24 @@
 import express, { Application, json, Request, Response } from 'express'
 import cors from 'cors'
+import { PORT } from './config/config'
+
 
 const app: Application = express()
 
 app.use(cors())
 app.use(json())
 
-const port: number = parseInt(process.env.SERVER_PORT || '3001')
+app.use('/api/messages', require('../routes/message'));
 
 
 
-
-app.get('/hello', (req: Request, res: Response) => {
-res.send('Hello, World!')
-})
-
-
+// bZgTh4dZw8tnoLfh
 
 
 
 
 
 
-app.listen(port, function () {
-console.log(`App is listening on port ${port} !`)
+app.listen(PORT, function () {
+console.log(`App is listening on port ${PORT} !`)
 })
