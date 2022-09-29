@@ -1,6 +1,7 @@
 import express, { Application, json, Request, Response } from 'express'
 import cors from 'cors'
-import { PORT } from './config/config'
+import { PORT, MONGO_URL } from './config/config'
+import { setupMongoDb } from './models/messages-repository'
 
 
 const app: Application = express()
@@ -19,6 +20,7 @@ app.use('/api/messages', require('../routes/message'));
 
 
 
-app.listen(PORT, function () {
+app.listen(PORT, async function () {
+    await setupMongoDb(MONGO_URL)
 console.log(`App is listening on port ${PORT} !`)
 })

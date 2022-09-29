@@ -1,0 +1,16 @@
+{
+  "name": "@chat-app/shared",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/message-item.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.7.23",
+    "typescript": "^4.8.4"
+  }
+}

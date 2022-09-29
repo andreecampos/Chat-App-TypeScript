@@ -1,16 +1,13 @@
 const express = require('express');
-const routes = express.Router();
-import { Request, Response } from 'express'
+const router = express.Router();
+const {getMessages, createMessages} = require ('../src/controllers/messageControllers')
 
 
 
-routes.get('/', (req: Request, res: Response) => {
-    res.json({message:'get all messages'})
-    })
-    
-routes.post('/', (req: Request, res: Response) => {
-    res.json({message:'Create  messages'})
-    })
+
+router.get('/', getMessages)
+router.post('/', createMessages)
 
 
-module.exports= routes;
+
+module.exports= router; 
