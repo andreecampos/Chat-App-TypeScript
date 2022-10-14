@@ -2,7 +2,11 @@
   "name": "@chat-app/shared",
   "version": "1.0.0",
   "description": "",
-  "main": "src/message-item.js",
+  "type": "module",
+  "exports": {
+    "./*": "./src/*"
+  },
+  "main": "src/index.ts",
   "scripts": {
     "build": "tsc"
   },

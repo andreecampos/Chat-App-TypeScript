@@ -1,16 +1,29 @@
 import React, { useEffect, useState } from "react";
-import MessageItem from '@chat-app/shared'
+import { MessageItem } from '@chat-app/shared'
 import './App.css';
 import axios from "axios";
+import { LoginInput } from "./LoginInput";
+//import LoginInput  from "./Login"
 
 
-axios.defaults.baseURL = 'http://localhost:4000/api/messages'
+axios.defaults.baseURL = //'http://localhost:4000/api/messages'
+  process.env.REACT_APP_MESSAGE_API || 'http://localhost:4000';
+axios.interceptors.request.use((config) => {
+  if (!config?.headers) {
+    config.headers = {};
+  }
+  const jwt = localStorage.getItem("jwt");
+  if (jwt) {
+    config.headers["authorization"] = `Bearer ${jwt}`;
+  }
+  return config;
+});
 
 
 
 
 const fetchMessages = async (): Promise<MessageItem[]> =>{
-  const response = await axios.get<MessageItem[]>("/")
+  const response = await axios.get<MessageItem[]>("/api/messages")
   return response.data
 }
 
@@ -20,7 +33,7 @@ const MessageList = ({ message, error }: { message: MessageItem[]; error?: strin
     return<div>{error}</div>;
   }else if (message){
     return (<div>{message.map((item)=>{
-      return <p key={item._id}>{item.text} by {item.userName}</p>
+      return <p key={item._id}>{item.text} by {item.author}</p>
     })}</div>);
   }else {
     return <div>'Waiting for messages'</div>
@@ -49,26 +62,22 @@ const MessageInput = ({
 };
 
 
-
-
-
-
-
 function App() {
 const [messageText, setMessageText]= useState<string>("");
 const [message, setMessage] = useState<MessageItem[]>([]);
 const [error, setError] = useState<string | undefined>();
+const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
 
 
 const createMessage = async (messageText: string): Promise<void> => {
   const messageItem: MessageItem = {
-      userName: 'Andree',
-      text: messageText,
-      timeStamp: new Date()
+    text: messageText,
+    timeStamp: new Date(),
+    author: ""
   }
   try {
-    await axios.post("/", messageItem);
-    const response = await axios.get<MessageItem[]>("/");
+    await axios.post("/api/messages", messageItem);
+    const response = await axios.get<MessageItem[]>("/api/messages");
     setMessage(response.data);
   }catch(err){
     setMessage([])
@@ -77,10 +86,6 @@ const createMessage = async (messageText: string): Promise<void> => {
     setMessageText("")
   }
 }
-
-
-
-
 
 
 
@@ -94,44 +99,43 @@ useEffect(()=>{
   },[])
 
 
-
+  const performLogin = async (
+    username: string,
+    password: string
+  ): Promise<void> => {
+    const loginResponse = await axios.post("/login", {
+      username: username,
+      password: password,
+    });
+    if (loginResponse && loginResponse.status === 200) {
+      localStorage.setItem("jwt", loginResponse.data);
+      setLoggedIn(true);
+      setError("");
+      const response = await axios.get<MessageItem[]>("/api/messages");
+      setMessage(response.data);
+    }
+  };
 
   return (
     <div className="App">
-      <header className="App-header">
-       <div className="Title">
-           CHAT APP
-        </div> 
-        <div className="Message-List">
-          <section>
-               <MessageList message={message} error={error}/>
-          </section>
-         </div>
 
-
-     <div className="Users">
-   
-     <div className="User-One">
-     <footer>
+    <header className="App-header"> Chatt App  </header>
+      
+      
+    <section className="App-content">
+        {isLoggedIn ? (
+              <MessageList message={message} error={error}/>
+        ) : (
+          <LoginInput  onLogin={performLogin}/>
+        )}           
+    </section>
+     <footer className="App-footer">
      <MessageInput
           onCreate={createMessage}
           setMessageText={setMessageText}
           messageText={messageText}
         />
      </footer>
-     </div>  
-     <div className="User-two">
-     <footer>
-     <MessageInput
-          onCreate={createMessage}
-          setMessageText={setMessageText}
-          messageText={messageText}
-        />
-     </footer>
-     </div>   
-
-     </div>   
-      </header>
     </div>
   );
 }
