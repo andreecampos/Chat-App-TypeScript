@@ -30,13 +30,11 @@ export const authenticateToken = (
         const decoded = jsonwebtoken.verify(token, secret) as TokenPayload;
         req.jwt = decoded;
       } catch (err) {
-        return res.sendStatus(403); // Bad token!
+        return res.sendStatus(403); 
       }
     } else {
-      return res.sendStatus(401); // No token! Unauthorized!
+      return res.sendStatus(401); 
     }
-  
-  
     next();
   };
 
@@ -44,11 +42,11 @@ export const authenticateToken = (
     const credentials = req.body;
     
     const userInfo = await performUserAuthentication(credentials);
+   
     if (!userInfo) {
+      
       return res.sendStatus(403);
     }
-  
-
     console.log("Got credentials:", credentials);
     const token = jsonwebtoken.sign(
       { sub: userInfo.username, name: userInfo.name, roles: userInfo.roles },
@@ -66,3 +64,4 @@ export const authenticateToken = (
 
     return userInfo;
   };
+  

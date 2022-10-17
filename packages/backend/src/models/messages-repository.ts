@@ -1,10 +1,13 @@
 import { MessageItem}  from '@chat-app/shared'
 import { connect, model, Schema } from "mongoose"
 
+
 const MessageSchema = new Schema({
     userName: String,
     text: String,
+    author: String,
     timeStamp: Date
+   
 })
 
 

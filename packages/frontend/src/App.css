@@ -47,11 +47,17 @@
   margin-left: 4px;
   padding: 4px;}
 
+.Register{
+  color: rgb(0, 0, 0);
+  background-color: #ffffff;
 
+}
 
 .App-link {
   color: #61dafb;
 }
+
+
 
 @keyframes App-logo-spin {
   from {

@@ -23,22 +23,5 @@ messageController.get("/", async (req: Request, res: Response<MessageItem[]>) =>
  );
  export default messageController;
 
-//  export const getMessages = async (req: Request, res: Response) => {
-//     const messageItems = await loadAllMessagesItems()
-//     console.log('All messages', messageItems)
-//     res.send(messageItems)
-//    res.status(200).json({message:'get all messages'});
-//     }
 
-
-// export const createMessages = async (req: Request<MessageItem>, res: Response<MessageItem[]>) => {
-//    const messageItem = req.body
-//    const saved = await saveMessageItem(messageItem)
-//    console.log('Saved message', saved)
-
-//    const messageItems = await loadAllMessagesItems()
-//    console.log('All messages', messageItems)
-//    res.send(messageItems)
-   
-// }
 
