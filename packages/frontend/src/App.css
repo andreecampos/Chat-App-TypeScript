@@ -12,40 +12,68 @@
   flex-direction: column;
   align-items: center;
   justify-content: start;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(40px + 2vmin);
+  padding: 20px;
   color: white;
 }
 
 .App-content {
-  background-color: #282c34;
-  color: white;
-  display: flex;
+  padding-right: 5%;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   min-height: 100%;
 }
 
 .App-footer {
-  padding: 8px;
+  padding: 5px;
+  margin: 30px;
 }
 
 .App-footer input {
-  padding: 4px;
+  padding: 10px;
 }
 
 .App-footer button {
   margin-left: 4px;
   padding: 4px;
 }
-
-.loginForm {
-  margin-left: 4px;
+.Link{
+  color: rgb(255, 255, 255);
+  font-size: 20px;
 }
 
-.loginForm div {
-  margin-left: 4px;
-  padding: 4px;}
+.loginForm {
+margin-top: 20%;
+font-size: 200%;
+padding: 50px;
+background-color: #61dafb;
+margin-left: 350px;
+margin-right: 250px;
+border-radius: 2%;
+color: rgb(255, 255, 255);
+background-color: #282c34;
+
+}
+.ButtonLogin{
+  font-size: 25px;
+  padding: 5px;
+  margin-top: 70px;
+  width: 200px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.ButtonCreate{
+  font-size: 25px;
+  padding: 5px;
+  width: 200px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
 
 .Register{
   color: rgb(0, 0, 0);
@@ -56,8 +84,28 @@
 .App-link {
   color: #61dafb;
 }
+.MessageList{
+  margin-left: 70%;
+  background-color: rgba(255, 255, 255, 0.548);
+  padding: 3px;
 
 
+}
+
+.MessageText{
+  border-radius: 10px;
+  background-color: rgb(18, 92, 241);
+  padding: 15px;
+ color: rgb(255, 255, 255);
+ font-family:Arial, Helvetica, sans-serif;
+ font-size: 20px;
+
+}
+.MessageAuthor{
+  margin-left: 50px;
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+}
 
 @keyframes App-logo-spin {
   from {

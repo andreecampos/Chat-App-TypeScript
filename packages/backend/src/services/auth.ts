@@ -9,59 +9,56 @@ const secret: string =
 const JWT_COOKIE_NAME = "jwt";
 
 export type TokenPayload = {
-    sub: string;
-    name: string;
-    roles: string[];
-  };
+  sub: string;
+  name: string;
+  roles: string[];
+};
 
- export interface JwtRequest<T> extends Request<T> {
-    jwt?: TokenPayload; 
-  }
+export interface JwtRequest<T> extends Request<T> {
+  jwt?: TokenPayload;
+}
 
 export const authenticateToken = (
-    req: JwtRequest<any>,
-    res: Response,
-    next: NextFunction
-  ) => {
-    const token: string | undefined = req.header("authorization")?.split(" ")[1];
-    
-    if (token) {
-      try {
-        const decoded = jsonwebtoken.verify(token, secret) as TokenPayload;
-        req.jwt = decoded;
-      } catch (err) {
-        return res.sendStatus(403); 
-      }
-    } else {
-      return res.sendStatus(401); 
-    }
-    next();
-  };
+  req: JwtRequest<any>,
+  res: Response,
+  next: NextFunction
+) => {
+  const token: string | undefined = req.header("authorization")?.split(" ")[1];
 
-  export const loginUser = async (req: JwtRequest<UserItem>,res: Response<string>) => {
-    const credentials = req.body;
-    
-    const userInfo = await performUserAuthentication(credentials);
-   
-    if (!userInfo) {
-      
+  if (token) {
+    try {
+      const decoded = jsonwebtoken.verify(token, secret) as TokenPayload;
+      req.jwt = decoded;
+    } catch (err) {
       return res.sendStatus(403);
     }
-    console.log("Got credentials:", credentials);
-    const token = jsonwebtoken.sign(
-      { sub: userInfo.username, name: userInfo.name, roles: userInfo.roles },
-      secret,
-      { expiresIn: "1800s" }
-    );
-    res.send(token);
-    return res.sendStatus(200);
-  };
+  } else {
+    return res.sendStatus(401);
+  }
+  next();
+};
 
-  const performUserAuthentication = async (
-    credentials: UserItem
-  ): Promise<UserInfo | null> => {
-    const userInfo = await loadUserByUsername(credentials.username);
+export const loginUser = async (req: JwtRequest<UserItem>, res: Response<string>) => {
+  const credentials = req.body;
+  const userInfo = await performUserAuthentication(credentials);
+  if (!userInfo) {
+    return res.sendStatus(403);
+  }
+  console.log("Got credentials:", credentials);
+  const token = jsonwebtoken.sign(
+    { sub: userInfo.username, name: userInfo.name, roles: userInfo.roles },
+    secret,
+    { expiresIn: "1800s" }
+  );
+  res.send(token);
+  return res.sendStatus(200);
+};
 
-    return userInfo;
-  };
-  
+const performUserAuthentication = async (
+  credentials: UserItem
+): Promise<UserInfo | null> => {
+  const userInfo = await loadUserByUsername(credentials.username);
+
+  return userInfo;
+};
+
