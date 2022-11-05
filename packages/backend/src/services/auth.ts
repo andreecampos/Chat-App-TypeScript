@@ -1,7 +1,8 @@
 import { UserItem } from '@chat-app/shared'
 import { NextFunction, Request, Response } from "express";
 import jsonwebtoken from "jsonwebtoken";
-import { loadUserByUsername, UserInfo } from "../models/user-repository";
+import { checkUser, loadUserByUsername, UserInfo } from "../models/user-repository";
+
 
 const secret: string =
   process.env.TOKEN_SECRET ||
@@ -27,7 +28,7 @@ export const authenticateToken = (
 
   if (token) {
     try {
-      const decoded = jsonwebtoken.verify(token, secret) as TokenPayload;
+      const decoded = jsonwebtoken.verify(token, JWT_COOKIE_NAME) as TokenPayload;
       req.jwt = decoded;
     } catch (err) {
       return res.sendStatus(403);
@@ -40,18 +41,32 @@ export const authenticateToken = (
 
 export const loginUser = async (req: JwtRequest<UserItem>, res: Response<string>) => {
   const credentials = req.body;
-  const userInfo = await performUserAuthentication(credentials);
-  if (!userInfo) {
-    return res.sendStatus(403);
+  const verifyUser = await checkUser(credentials)
+  if (verifyUser) {
+    const token = jsonwebtoken.sign(
+      { sub: verifyUser.username, },
+      secret,
+      { expiresIn: "1800s" }
+    );
+    return { token }
+  } else {
+    return res.sendStatus(401)
   }
+
+  // const userInfo = await performUserAuthentication(credentials);
+  // if (!userInfo) {
+  //   return res.sendStatus(403)
+  // }
   console.log("Got credentials:", credentials);
-  const token = jsonwebtoken.sign(
-    { sub: userInfo.username, name: userInfo.name, roles: userInfo.roles },
-    secret,
-    { expiresIn: "1800s" }
-  );
-  res.send(token);
-  return res.sendStatus(200);
+  // console.log('informationnn', userInfo)
+
+  // const token = jsonwebtoken.sign(
+  //   { sub: userInfo.username, name: userInfo.name, roles: userInfo.roles },
+  //   secret,
+  //   { expiresIn: "1800s" }
+  // );
+  // res.send(token);
+  // return res.sendStatus(200);
 };
 
 const performUserAuthentication = async (

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { UserItem } from "@chat-app/shared";
 
 type LoginInputProps = {
   onLogin: (username: string, password: string) => Promise<void>;
@@ -8,6 +9,7 @@ type LoginInputProps = {
 export const LoginInput = (props: LoginInputProps) => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [res, setRes] = useState<string | UserItem>("");
 
   const attemptLogin = async () => {
     console.log(`Login with ${username} and ${password}`);

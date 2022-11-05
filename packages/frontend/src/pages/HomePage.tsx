@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { MessageItem } from "@chat-app/shared";
+import { MessageItem, UserItem } from "@chat-app/shared";
 import "../App.css";
 import axios from "axios";
 import { LoginInput } from "../LoginInput";
@@ -34,11 +34,11 @@ const MessageList = ({
   } else if (message) {
     return (
       <div>
-        {message.map((item) => {
+        {message.map((item, index) => {
           return (
-            <div>
+            <div key={index}>
               <div className="MessageList">
-                <p key={item._id}>
+                <p>
                   <div className="MessageText">{item.text}</div>
                   <div className="MessageAuthor">
                     {item.author} -
@@ -117,12 +117,21 @@ export default function HomePage() {
     username: string,
     password: string
   ): Promise<void> => {
-    const loginResponse = await axios.post("/login", {
+    const loginResponse = await axios.post<UserItem>("/login", {
       username: username,
       password: password,
     });
-    if (loginResponse && loginResponse.status === 200) {
-      localStorage.setItem("jwt", loginResponse.data);
+
+    // if (loginResponse && loginResponse.status === 200) {
+    //   localStorage.setItem("jwt", loginResponse.data);
+    //   setLoggedIn(true);
+    //   setError("");
+    //   const response = await axios.get<MessageItem[]>("/api/messages");
+    //   setMessage(response.data);
+    // }
+    if (loginResponse && loginResponse.status !== 401) {
+      const token = loginResponse.data.token;
+      localStorage.setItem("jwt", token);
       setLoggedIn(true);
       setError("");
       const response = await axios.get<MessageItem[]>("/api/messages");

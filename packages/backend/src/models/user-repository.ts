@@ -26,29 +26,24 @@ export const setupUser = async (url: string) => {
 export const loadUserByUsername = async (username: string): Promise<UserInfo | null> => {
     return await UserInfoModel.findOne({ username: username }).exec()
 }
-// export const loadUserByUsername = async (user: UserItem): Promise<UserInfo | null> => {
-//     const findUser = await UserInfoModel.findOne({ username: user.username });
-//     if (findUser && (await bcrypt.compare(user.password, findUser.password))) {
-//         return findUser;
-//     } else {
-//         throw new Error();
-//     }
-// }
+
+
 export const saveUserItem = async (userItem: UserItem): Promise<void> => {
 
     const username = userItem.username
     const password = await bcrypt.hash(userItem.password, 10)
-    // userItem.password = bcrypt.hash(userItem.password, hash)
+
 
     const newModel = new UserInfoModel({ username, password })
     await newModel.save()
 }
-// export const checkUser = async (
-//     user: UserItem): Promise<UserItem | null> => {
-//     const findUser = await UserInfoModel.findOne({ username: user.username });
-//     if (findUser && (await bcrypt.compare(user.password, findUser.password))) {
-//         return findUser;
-//     } else {
-//         throw new Error();
-//     }
-// }
+
+export const checkUser = async (
+    user: UserItem): Promise<UserItem | null> => {
+    const findUser = await UserInfoModel.findOne({ username: user.username });
+    if (findUser && (await bcrypt.compare(user.password, findUser.password))) {
+        return findUser;
+    } else {
+        return null;
+    }
+}
