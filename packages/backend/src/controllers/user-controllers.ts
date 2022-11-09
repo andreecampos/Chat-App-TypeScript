@@ -1,6 +1,6 @@
 import { UserItem } from '@chat-app/shared'
 import express, { Request, Response } from "express"
-// import { checkUser } from '../models/user-repository'
+import { checkUser } from '../models/user-repository'
 import { saveUsuarioItem } from '../services/user-service'
 
 
@@ -15,13 +15,13 @@ UserController.post("/", async (req: Request<UserItem>, res: Response<void>) => 
     }
 })
 
-// UserController.post(
-//     "/login",
-//     async (req: Request<UserItem>, res: Response) => {
-//         const reqBody = req.body;
-//         const getValidUser = await checkUser(reqBody);
-//         res.send(getValidUser);
-//     }
-// );
+UserController.post(
+    "/login",
+    async (req: Request<UserItem>, res: Response) => {
+        const reqBody = req.body;
+        const getValidUser = await checkUser(reqBody);
+        res.send(getValidUser);
+    }
+);
 
 export default UserController

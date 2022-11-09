@@ -117,26 +117,28 @@ export default function HomePage() {
     username: string,
     password: string
   ): Promise<void> => {
-    const loginResponse = await axios.post<UserItem>("/login", {
+    const loginResponse = await axios.post("/login", {
       username: username,
       password: password,
     });
 
-    // if (loginResponse && loginResponse.status === 200) {
-    //   localStorage.setItem("jwt", loginResponse.data);
-    //   setLoggedIn(true);
-    //   setError("");
-    //   const response = await axios.get<MessageItem[]>("/api/messages");
-    //   setMessage(response.data);
-    // }
-    if (loginResponse && loginResponse.status !== 401) {
-      const token = loginResponse.data.token;
-      localStorage.setItem("jwt", token);
+    if (loginResponse && loginResponse.status === 200) {
+      localStorage.setItem("jwt", loginResponse.data);
       setLoggedIn(true);
       setError("");
       const response = await axios.get<MessageItem[]>("/api/messages");
       setMessage(response.data);
     }
+
+  //     const token = loginResponse.data;
+  //     console.log( token, "hej")
+  //     localStorage.setItem("jwt", token);
+
+  //     setLoggedIn(true);
+  //     setError("");
+  //     const response = await axios.get<MessageItem[]>("/api/messages");
+  //     setMessage(response.data);
+    
   };
 
   return (

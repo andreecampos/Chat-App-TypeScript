@@ -30,10 +30,10 @@ const mongoUrl: string =
 
 
 // app.post("/login", UserController);
+app.use("/register", UserController)
 app.post("/login", loginUser);
 app.use('/api/messages', authenticateToken);
 app.use('/api/messages', messageControllers);
-app.use("/register", UserController)
 
 // bZgTh4dZw8tnoLfh
 
