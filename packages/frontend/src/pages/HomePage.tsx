@@ -4,7 +4,7 @@ import "../App.css";
 import axios from "axios";
 import { LoginInput } from "../LoginInput";
 
-axios.defaults.baseURL = //'http://localhost:4000/api/messages'
+axios.defaults.baseURL = 
   process.env.REACT_APP_MESSAGE_API || "http://localhost:4000";
 axios.interceptors.request.use((config) => {
   if (!config?.headers) {
@@ -129,16 +129,6 @@ export default function HomePage() {
       const response = await axios.get<MessageItem[]>("/api/messages");
       setMessage(response.data);
     }
-
-  //     const token = loginResponse.data;
-  //     console.log( token, "hej")
-  //     localStorage.setItem("jwt", token);
-
-  //     setLoggedIn(true);
-  //     setError("");
-  //     const response = await axios.get<MessageItem[]>("/api/messages");
-  //     setMessage(response.data);
-    
   };
 
   return (

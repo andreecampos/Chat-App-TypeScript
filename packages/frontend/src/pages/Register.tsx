@@ -19,8 +19,8 @@ export default function Register() {
   };
 
   return (
-    <div className="Register">
-      register
+    <div className="loginForm">
+      Register Page
       <div>
         Username:{" "}
         <input
@@ -38,9 +38,14 @@ export default function Register() {
         />
       </div>
       <div>
-        <button onClick={(e) => createUser(username)}>Register</button>
+        <button className="ButtonLogin" onClick={(e) => createUser(username)}>
+          Register
+        </button>
       </div>
-      <Link to="/">LOGIN</Link>
+      <br />
+      <Link className="Link" to="/">
+        LOGIN
+      </Link>
     </div>
   );
 }

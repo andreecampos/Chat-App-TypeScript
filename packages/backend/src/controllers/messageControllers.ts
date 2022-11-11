@@ -7,7 +7,6 @@ const messageController = express.Router();
 
 messageController.get("/", async (req: JwtRequest<MessageItem>, res: Response<MessageItem[]>) => {
   const response = await loadMesagges();
-  // console.log(response);
   res.send(response);
 
 });

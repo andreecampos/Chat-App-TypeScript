@@ -38,12 +38,3 @@ export const saveUserItem = async (userItem: UserItem): Promise<void> => {
     await newModel.save()
 }
 
-export const checkUser = async (
-    user: UserItem): Promise<UserItem | null> => {
-    const findUser = await UserInfoModel.findOne({ username: user.username });
-    if (findUser && (await bcrypt.compare(user.password, findUser.password))) {
-        return findUser;
-    } else {
-        return null;
-    }
-}

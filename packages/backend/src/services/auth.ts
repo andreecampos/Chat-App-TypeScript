@@ -1,7 +1,9 @@
 import { UserItem } from '@chat-app/shared'
 import { NextFunction, Request, Response } from "express";
 import jsonwebtoken from "jsonwebtoken";
-import { checkUser, loadUserByUsername, UserInfo } from "../models/user-repository";
+import {
+  loadUserByUsername, UserInfo
+} from "../models/user-repository";
 const bcrypt = require('bcrypt')
 
 
@@ -28,11 +30,11 @@ export const authenticateToken = (
   const token: string | undefined = req.header("authorization")?.split(" ")[1];
 
   if (token) {
-    // console.log(token, "andre campos")
+
     try {
       const decoded = jsonwebtoken.verify(token, secret) as TokenPayload;
       req.jwt = decoded;
-      // console.log(req.jwt, "andree campos")
+
     } catch (err) {
       return res.sendStatus(403);
     }
@@ -43,21 +45,7 @@ export const authenticateToken = (
 };
 
 export const loginUser = async (req: JwtRequest<UserItem>, res: Response<string>) => {
-  // console.log(req.body, "ale")
   const credentials = req.body;
-  //  const verifyUser = await checkUser(credentials)
-  // if (verifyUser) {
-  //   const token = jsonwebtoken.sign(
-  //     { sub: verifyUser.username, },
-  //     secret,
-  //     { expiresIn: "1800s" }
-  //   );
-  //   console.log(token)
-  //   return { token }
-  // } else {
-  //   return res.sendStatus(401)
-  // }
-
   const userInfo = await performUserAuthentication(credentials);
 
 
@@ -72,18 +60,17 @@ export const loginUser = async (req: JwtRequest<UserItem>, res: Response<string>
     { expiresIn: "1800s" }
   );
   res.send(token);
-  // return res.sendStatus(200);
 };
 
 const performUserAuthentication = async (
   credentials: UserItem
 ): Promise<UserInfo | null> => {
   const userInfo = await loadUserByUsername(credentials.username);
-  if(!userInfo){
+  if (!userInfo) {
     return null
   }
   const compare = await bcrypt.compare(credentials.password, userInfo.password)
-  if(compare){
+  if (compare) {
     return userInfo
   }
   return null;

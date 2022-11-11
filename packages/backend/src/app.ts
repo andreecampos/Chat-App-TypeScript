@@ -1,6 +1,5 @@
 import express, { Application, json, Request, Response } from 'express'
 import cors from 'cors'
-//import { PORT, MONGO_URL } from './config/config'
 import { setupMongoDb } from './models/messages-repository'
 import messageControllers from './controllers/messageControllers'
 import { authenticateToken, loginUser } from './services/auth'
@@ -10,10 +9,6 @@ import { loadUserByUsername, saveUserItem } from './models/user-repository'
 import { UserItem } from '@chat-app/shared'
 import UserController from './controllers/user-controllers'
 
-
-
-// SERVER_PORT = 4000
-// MONGO_URL = mongodb+srv://chatapp:bZgTh4dZw8tnoLfh@cluster0.rjtccdb.mongodb.net/chatApp
 
 dotenv.config();
 
@@ -27,16 +22,12 @@ const port: number = parseInt(process.env.SERVER_PORT || "4000");
 const mongoUrl: string =
   process.env.MONGODB_URL || "mongodb://db:27017";
 
-
-
-// app.post("/login", UserController);
 app.use("/register", UserController)
 app.post("/login", loginUser);
 app.use('/api/messages', authenticateToken);
 app.use('/api/messages', messageControllers);
 
-// bZgTh4dZw8tnoLfh
-
+export const checkUrl = mongoUrl;
 
 app.listen(port, async function () {
   await setupMongoDb(mongoUrl)

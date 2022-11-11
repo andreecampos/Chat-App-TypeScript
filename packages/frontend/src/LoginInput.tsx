@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-
 type LoginInputProps = {
   onLogin: (username: string, password: string) => Promise<void>;
 };
@@ -9,7 +8,6 @@ type LoginInputProps = {
 export const LoginInput = (props: LoginInputProps) => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-
 
   const attemptLogin = async () => {
     console.log(`Login with ${username} and ${password}`);
@@ -41,6 +39,7 @@ export const LoginInput = (props: LoginInputProps) => {
           Login
         </button>
       </div>
+      <br />
       <Link className="Link" to="/register">
         REGISTER
       </Link>
