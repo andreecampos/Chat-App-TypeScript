@@ -114,15 +114,6 @@ export default function HomePage() {
     }, 2500);
   }, []);
 
-  // useEffect(() => {
-  //   fetchMessages()
-  //     .then(setMessage)
-  //     .catch((error) => {
-  //       setMessage([]);
-  //       setError("Something went wrong when fetching my messages...");
-  //     });
-  // }, []);
-
   const performLogin = async (
     username: string,
     password: string
