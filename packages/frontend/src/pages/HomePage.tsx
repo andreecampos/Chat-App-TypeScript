@@ -4,7 +4,7 @@ import "../App.css";
 import axios from "axios";
 import { LoginInput } from "../LoginInput";
 
-axios.defaults.baseURL = 
+axios.defaults.baseURL =
   process.env.REACT_APP_MESSAGE_API || "http://localhost:4000";
 axios.interceptors.request.use((config) => {
   if (!config?.headers) {
@@ -103,15 +103,25 @@ export default function HomePage() {
       setMessageText("");
     }
   };
-
   useEffect(() => {
-    fetchMessages()
-      .then(setMessage)
-      .catch((error) => {
-        setMessage([]);
-        setError("Something went wrong when fetching my messages...");
-      });
+    const interval = setInterval(() => {
+      fetchMessages()
+        .then(setMessage)
+        .catch((error) => {
+          setMessage([]);
+          setError("Something went wrong when fetching messages...");
+        });
+    }, 2500);
   }, []);
+
+  // useEffect(() => {
+  //   fetchMessages()
+  //     .then(setMessage)
+  //     .catch((error) => {
+  //       setMessage([]);
+  //       setError("Something went wrong when fetching my messages...");
+  //     });
+  // }, []);
 
   const performLogin = async (
     username: string,
